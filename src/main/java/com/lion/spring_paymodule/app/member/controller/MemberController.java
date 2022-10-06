@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/member")
 @RequiredArgsConstructor
@@ -40,10 +43,18 @@ public class MemberController {
             return Util.spring.responseEntityOf(ResultData.of("F-3", "비밀번호가 일치하지 않습니다."));
         }
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authentication", "JWT_Access_Token");
+        String accessToken = "JWT_Access_Token";
 
-        return Util.spring.responseEntityOf(ResultData.of("S-1", "로그인 성공, Access Token을 발급합니다."), headers);
+        return Util.spring.responseEntityOf(
+                ResultData.of(
+                        "S-1",
+                        "로그인 성공, Access Token을 발급합니다.",
+                        Util.mapOf(
+                                "accessToken", accessToken
+                        )
+                ),
+                Util.spring.httpHeadersOf("Authentication", accessToken)
+        );
     }
 
     @Data

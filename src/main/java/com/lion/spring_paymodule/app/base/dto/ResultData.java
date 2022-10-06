@@ -12,9 +12,13 @@ public class ResultData<T> {
     private String msg;
     private T data;
 
-    public static <T> ResultData<T> of(String resultCode, String msg) {
-        return new ResultData(resultCode, msg, null);
+    public static <T> ResultData<T> of(String resultCode, String msg, T data) {
+        return new ResultData<>(resultCode, msg, data);
     }
+    public static <T> ResultData<T> of(String resultCode, String msg) {
+        return of(resultCode, msg, null);
+    }
+
 
     public boolean isSuccess() {
         return resultCode.startsWith("S-");
