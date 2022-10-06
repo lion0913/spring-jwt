@@ -5,8 +5,11 @@ spring:
     restart:
       enabled: true
   datasource:
-    url: jdbc:mariadb://127.0.0.1:3306/spring_paymodule?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul
+    url: jdbc:mariadb://127.0.0.1:3306/spring_paymodule_test?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul
     username: root
     password:
   config:
     import: application-secret.yml
+  jpa:
+    hibernate:
+      ddl-auto: create
