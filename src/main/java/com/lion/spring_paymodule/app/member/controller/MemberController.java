@@ -3,6 +3,7 @@ package com.lion.spring_paymodule.app.member.controller;
 import com.lion.spring_paymodule.app.base.dto.ResultData;
 import com.lion.spring_paymodule.app.member.entity.Member;
 import com.lion.spring_paymodule.app.member.service.MemberService;
+import com.lion.spring_paymodule.app.util.JwtProvider;
 import com.lion.spring_paymodule.app.util.Util;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ public class MemberController {
 
     private final PasswordEncoder passwordEncoder;
 
+
     @PostMapping("/login")
     public ResponseEntity<ResultData> login(@RequestBody LoginDto loginDto) {
 
@@ -43,7 +45,7 @@ public class MemberController {
             return Util.spring.responseEntityOf(ResultData.of("F-3", "비밀번호가 일치하지 않습니다."));
         }
 
-        String accessToken = "JWT_Access_Token";
+        String accessToken = memberService.generateAccessToken(member);
 
         return Util.spring.responseEntityOf(
                 ResultData.of(
