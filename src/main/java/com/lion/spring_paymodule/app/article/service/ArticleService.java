@@ -1,5 +1,6 @@
 package com.lion.spring_paymodule.app.article.service;
 
+import com.lion.spring_paymodule.app.article.dto.ArticleModifyDto;
 import com.lion.spring_paymodule.app.article.entity.Article;
 import com.lion.spring_paymodule.app.article.repository.ArticleRepository;
 import com.lion.spring_paymodule.app.member.entity.Member;
@@ -40,5 +41,15 @@ public class ArticleService {
 
     public void delete(Article article) {
         articleRepository.delete(article);
+    }
+
+    public boolean canModify(MemberContext memberContext, Article article) {
+        return canBeDeleted(memberContext, article);
+    }
+
+    public void modify(Article article, ArticleModifyDto articleModifyDto) {
+        article.setSubject(articleModifyDto.getSubject());
+        article.setContent(articleModifyDto.getContent());
+        articleRepository.save(article);
     }
 }

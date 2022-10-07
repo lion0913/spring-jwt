@@ -1,5 +1,6 @@
 package com.lion.spring_paymodule.app.article.controller;
 
+import com.lion.spring_paymodule.app.article.dto.ArticleModifyDto;
 import com.lion.spring_paymodule.app.article.entity.Article;
 import com.lion.spring_paymodule.app.article.service.ArticleService;
 import com.lion.spring_paymodule.app.base.dto.ResultData;
@@ -11,6 +12,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -72,5 +74,36 @@ public class ArticleController {
         );
     }
 
+    @PatchMapping("{id}")
+    public ResponseEntity<ResultData> modify(@PathVariable Long id, @AuthenticationPrincipal MemberContext memberContext, @Valid @RequestBody ArticleModifyDto articleModifyDto) {
+        Article article = articleService.findById(id);
+
+        if (article == null) {
+            return Util.spring.responseEntityOf(
+                    ResultData.of(
+                            "F-1",
+                            "해당 게시물은 존재하지 않습니다."
+                    )
+            );
+        }
+
+        if (articleService.canModify(memberContext, article) == false) {
+            return Util.spring.responseEntityOf(
+                    ResultData.of(
+                            "F-2",
+                            "수정 권한이 없습니다."
+                    )
+            );
+        }
+
+        articleService.modify(article, articleModifyDto);
+
+        return Util.spring.responseEntityOf(
+                ResultData.of(
+                        "S-1",
+                        "해당 게시물이 수정되었습니다."
+                )
+        );
+    }
 
 }
