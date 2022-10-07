@@ -32,7 +32,7 @@ public class Util {
 
     public static class spring {
         public static <T> ResponseEntity<ResultData> responseEntityOf(ResultData<T> resultData) {
-            return new ResponseEntity<>(resultData, null);
+            return responseEntityOf(resultData, null);
         }
 
         public static <T> ResponseEntity<ResultData> responseEntityOf(ResultData<T> resultData, HttpHeaders headers) {

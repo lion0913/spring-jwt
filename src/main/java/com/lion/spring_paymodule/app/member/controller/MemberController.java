@@ -3,6 +3,7 @@ package com.lion.spring_paymodule.app.member.controller;
 import com.lion.spring_paymodule.app.base.dto.ResultData;
 import com.lion.spring_paymodule.app.member.entity.Member;
 import com.lion.spring_paymodule.app.member.service.MemberService;
+import com.lion.spring_paymodule.app.security.MemberContext;
 import com.lion.spring_paymodule.app.util.JwtProvider;
 import com.lion.spring_paymodule.app.util.Util;
 import lombok.Data;
@@ -10,11 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +27,19 @@ public class MemberController {
 
     private final PasswordEncoder passwordEncoder;
 
+    @GetMapping("/test")
+    public String test(@AuthenticationPrincipal MemberContext memberContext) {
+        return "안녕" + memberContext;
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<ResultData> me(@AuthenticationPrincipal MemberContext memberContext) {
+        if(memberContext == null) {
+            return Util.spring.responseEntityOf(ResultData.failOf(null));
+        }
+
+        return Util.spring.responseEntityOf(ResultData.successOf(memberContext));
+    }
 
     @PostMapping("/login")
     public ResponseEntity<ResultData> login(@RequestBody LoginDto loginDto) {
