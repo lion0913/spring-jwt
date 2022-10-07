@@ -1,6 +1,7 @@
 package com.lion.spring_paymodule.app.member.controller;
 
 import com.lion.spring_paymodule.app.base.dto.ResultData;
+import com.lion.spring_paymodule.app.member.dto.LoginDto;
 import com.lion.spring_paymodule.app.member.entity.Member;
 import com.lion.spring_paymodule.app.member.service.MemberService;
 import com.lion.spring_paymodule.app.security.MemberContext;
@@ -15,6 +16,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,11 +44,7 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ResultData> login(@RequestBody LoginDto loginDto) {
-
-        if(loginDto.isNotValid()){
-            return Util.spring.responseEntityOf(ResultData.of("F-1", "로그인 정보가 올바르지 않습니다."));
-        }
+    public ResponseEntity<ResultData> login(@Valid @RequestBody LoginDto loginDto) {
 
         Member member = memberService.findByUsername(loginDto.getUsername()).orElse(null);
         if (member == null) {
@@ -71,16 +69,4 @@ public class MemberController {
         );
     }
 
-    @Data
-    public static class LoginDto {
-        private String username;
-        private String password;
-
-        public boolean isNotValid() {
-            if(username == null || password == null || username.trim().length() == 0 || password.trim().length() == 0) {
-                return true;
-            }
-            return false;
-        }
-    }
 }
