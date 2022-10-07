@@ -28,4 +28,8 @@ public class ArticleService {
     public List<Article> findAll() {
         return articleRepository.findAllByOrderByIdDesc();
     }
+
+    public Article findById(Long id) {
+        return articleRepository.findById(id).orElse(null);
+    }
 }
