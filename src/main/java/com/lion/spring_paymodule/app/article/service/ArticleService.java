@@ -6,6 +6,8 @@ import com.lion.spring_paymodule.app.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ArticleService {
@@ -14,12 +16,16 @@ public class ArticleService {
     public Article write(Member author, String subject, String content) {
         Article article = Article.builder()
                 .author(author)
-                .subjcet(subject)
+                .subject(subject)
                 .content(content)
                 .build();
 
         articleRepository.save(article);
 
         return article;
+    }
+
+    public List<Article> findAll() {
+        return articleRepository.findAllByOrderByIdDesc();
     }
 }
