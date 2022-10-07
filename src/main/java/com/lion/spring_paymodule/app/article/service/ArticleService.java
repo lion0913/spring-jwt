@@ -3,6 +3,7 @@ package com.lion.spring_paymodule.app.article.service;
 import com.lion.spring_paymodule.app.article.entity.Article;
 import com.lion.spring_paymodule.app.article.repository.ArticleRepository;
 import com.lion.spring_paymodule.app.member.entity.Member;
+import com.lion.spring_paymodule.app.security.MemberContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,5 +32,13 @@ public class ArticleService {
 
     public Article findById(Long id) {
         return articleRepository.findById(id).orElse(null);
+    }
+
+    public boolean canBeDeleted(MemberContext memberContext, Article article) {
+        return memberContext.getId() == article.getAuthor().getId();
+    }
+
+    public void delete(Article article) {
+        articleRepository.delete(article);
     }
 }
