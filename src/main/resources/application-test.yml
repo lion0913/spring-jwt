@@ -10,6 +10,3 @@ spring:
     password:
   config:
     import: application-secret.yml
-  jpa:
-    hibernate:
-      ddl-auto: create
