@@ -7,6 +7,7 @@ import com.lion.spring_paymodule.app.member.service.MemberService;
 import com.lion.spring_paymodule.app.security.MemberContext;
 import com.lion.spring_paymodule.app.util.JwtProvider;
 import com.lion.spring_paymodule.app.util.Util;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -23,6 +24,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/member")
 @RequiredArgsConstructor
+@Tag(name = "MemberController", description = "로그인 기능과 로그인 된 회원의 정보를 제공 기능을 담당하는 컨트롤러")
 public class MemberController {
 
     private final MemberService memberService;
